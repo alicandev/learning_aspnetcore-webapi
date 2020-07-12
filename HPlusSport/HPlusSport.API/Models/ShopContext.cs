@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 
-
 namespace HPlusSport.API.Models
 {
     public class ShopContext : DbContext
@@ -13,11 +12,10 @@ namespace HPlusSport.API.Models
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Category>().HasMany(c => c.Products).WithOne(a => a.Category).HasForeignKey(a => a.CategoryId);
+            modelBuilder.Entity<Category>().HasMany(c => c.Products).WithOne(p => p.Category).HasForeignKey(p => p.CategoryId);
             modelBuilder.Entity<Order>().HasMany(o => o.Products);
             modelBuilder.Entity<Order>().HasOne(o => o.User);
             modelBuilder.Entity<User>().HasMany(u => u.Orders).WithOne(o => o.User).HasForeignKey(o => o.UserId);
-
             modelBuilder.Seed();
         }
 
