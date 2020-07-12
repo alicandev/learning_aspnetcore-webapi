@@ -1,3 +1,6 @@
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using HPlusSport.API.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -7,17 +10,20 @@ namespace HPlusSport.API.Controllers
     [ApiController]
     public class ProductsController : ControllerBase
     {
-        private readonly ShopContext _shopContext;
-
-        public ProductsController(ShopContext shopContext)
+        private readonly ShopContext _context; // Dependency inject shop context to this controller using its ctor.
+        public ProductsController(ShopContext context)
         {
-            _shopContext = shopContext;
+            _context = context;
+            
+            // Check whether the database is created as the Seed is not an
+            // automatic process. This seeds the database if it's not yet seeded.
+            _context.Database.EnsureCreated(); 
         }
         
         [HttpGet]
-        public string GetProducts()
+        public IEnumerable<Product> GetAllProducts()
         {
-            return "Wow, it works!";
+            return _context.Products.ToArray();
         }
     }
 }

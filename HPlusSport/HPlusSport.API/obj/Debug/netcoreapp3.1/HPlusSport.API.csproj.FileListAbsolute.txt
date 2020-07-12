@@ -17,3 +17,9 @@
 /Users/alicandemirtas/dev/learning/netcore-webapi/HPlusSport/HPlusSport.API/obj/Debug/netcoreapp3.1/HPlusSport.API.dll
 /Users/alicandemirtas/dev/learning/netcore-webapi/HPlusSport/HPlusSport.API/obj/Debug/netcoreapp3.1/HPlusSport.API.pdb
 /Users/alicandemirtas/dev/learning/netcore-webapi/HPlusSport/HPlusSport.API/obj/Debug/netcoreapp3.1/HPlusSport.API.genruntimeconfig.cache
+/Users/alicandemirtas/dev/learning/netcore-webapi/HPlusSport/HPlusSport.API/bin/Debug/netcoreapp3.1/Microsoft.Bcl.AsyncInterfaces.dll
+/Users/alicandemirtas/dev/learning/netcore-webapi/HPlusSport/HPlusSport.API/bin/Debug/netcoreapp3.1/Microsoft.Bcl.HashCode.dll
+/Users/alicandemirtas/dev/learning/netcore-webapi/HPlusSport/HPlusSport.API/bin/Debug/netcoreapp3.1/Microsoft.EntityFrameworkCore.dll
+/Users/alicandemirtas/dev/learning/netcore-webapi/HPlusSport/HPlusSport.API/bin/Debug/netcoreapp3.1/Microsoft.EntityFrameworkCore.Abstractions.dll
+/Users/alicandemirtas/dev/learning/netcore-webapi/HPlusSport/HPlusSport.API/bin/Debug/netcoreapp3.1/Microsoft.EntityFrameworkCore.InMemory.dll
+/Users/alicandemirtas/dev/learning/netcore-webapi/HPlusSport/HPlusSport.API/obj/Debug/netcoreapp3.1/HPlusSport.API.csproj.CopyComplete
