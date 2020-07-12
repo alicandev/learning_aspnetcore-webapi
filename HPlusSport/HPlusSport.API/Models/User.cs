@@ -7,6 +7,6 @@ namespace HPlusSport.API.Models
         public int Id { get; set; }
         public string Email { get; set; }
         
-        public virtual List<Order> Order { get; set; }
+        public virtual List<Order> Orders { get; set; }
     }
 }
