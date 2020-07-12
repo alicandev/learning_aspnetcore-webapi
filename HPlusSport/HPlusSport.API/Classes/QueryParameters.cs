@@ -14,5 +14,18 @@ namespace HPlusSport.API.Classes
             get => _size;
             set => _size = Math.Min(_maxSize, value);
         }
+
+        public string SortBy { get; set; } = "Id";
+
+        private string _sortOrder = "asc";
+        public string SortOrder
+        {
+            get => _sortOrder;
+            set
+            {
+                if (value == "asc" || value == "desc")
+                    _sortOrder = value;
+            }
+        }
     }
 }

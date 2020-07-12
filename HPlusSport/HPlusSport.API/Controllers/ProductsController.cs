@@ -27,35 +27,43 @@ namespace HPlusSport.API.Controllers
         {
             var products = _context.Products.AsQueryable();
 
-            if (queryParameters.MinPrice != null && queryParameters.MaxPrice != null)
-                products = products.Where(p => 
-                    p.Price >= queryParameters.MinPrice.Value &&
-                    p.Price <= queryParameters.MaxPrice.Value
-                );
-            else if (queryParameters.MinPrice != null)
-                products = products.Where(p => 
-                    p.Price > queryParameters.MinPrice.Value
-                );
-            else if (queryParameters.MaxPrice != null)
-                products = products.Where(p => 
-                    p.Price < queryParameters.MaxPrice.Value
-                );
+            // min/max price
+            products = 
+                (queryParameters.MinPrice, queryParameters.MaxPrice) switch {
+                    (null, null) => products,
+                    (_, null) => products.Where(p => p.Price > queryParameters.MinPrice.Value),
+                    (null, _) => products.Where( p => p.Price < queryParameters.MaxPrice.Value),
+                    (_, _) => products.Where(p => 
+                        p.Price >= queryParameters.MinPrice.Value 
+                        && p.Price <= queryParameters.MaxPrice.Value
+                    )
+                };
 
-            if (!string.IsNullOrEmpty(queryParameters.Sku))
-                products = products.Where(p => 
-                    p.Sku == queryParameters.Sku
-                );
+            // sku
+            products =
+                !string.IsNullOrEmpty(queryParameters.Sku)
+                    ? products.Where(p => p.Sku == queryParameters.Sku)
+                    : products;
 
-            if (!string.IsNullOrEmpty(queryParameters.Name))
-                products = products.Where(p =>
-                    p.Name.ToLower().Contains(queryParameters.Name.ToLower())
-                );
+            // search
+            products =
+                !string.IsNullOrEmpty(queryParameters.Name)
+                    ? products.Where(p => p.Name.ToLower().Contains(queryParameters.Name.ToLower()))
+                    : products;
             
+            // order
+            products =
+                !string.IsNullOrEmpty(queryParameters.SortBy)
+                && typeof(Product).GetProperty(queryParameters.SortBy) != null
+                    ? products.OrderByCustom(queryParameters.SortBy, queryParameters.SortOrder)
+                    : products;
+            
+            // pagination
             products =
                 products
                 .Skip(queryParameters.Size * (queryParameters.Page - 1))
                 .Take(queryParameters.Size);
-             
+
             return Ok(await products.ToArrayAsync());
         }
 
@@ -63,11 +71,8 @@ namespace HPlusSport.API.Controllers
         public async Task<IActionResult> GetProduct(int id)
         {
             var product = await _context.Products.FindAsync(id);
-
-            if (product == null)
-            {
-                return NotFound();
-            }
+            
+            if (product == null) return NotFound();
             
             return Ok(product);
         }
