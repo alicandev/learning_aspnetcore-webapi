@@ -1,8 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using HPlusSport.API.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace HPlusSport.API.Controllers
 {
@@ -14,27 +16,26 @@ namespace HPlusSport.API.Controllers
         public ProductsController(ShopContext context)
         {
             _context = context;
-            
-            // Check whether the database is created as the Seed is not an
-            // automatic process. This seeds the database if it's not yet seeded.
-            _context.Database.EnsureCreated(); 
+            _context.Database.EnsureCreated();
         }
         
         [HttpGet]
-        public IActionResult GetAllProducts()
+        public async Task<IActionResult> GetAllProducts()
         {
-            return Ok(
-                _context.Products.ToArray()
-            );
+            var products = await _context.Products.ToArrayAsync();
+            
+            return Ok(products);
         }
 
         [HttpGet("{id}")] 
-        public IActionResult GetProduct(int id)
+        public async Task<IActionResult> GetProduct(int id)
         {
-            var product = _context.Products.Find(id);
-            
-            if (product == null) 
+            var product = await _context.Products.FindAsync(id);
+
+            if (product == null)
+            {
                 return NotFound();
+            }
             
             return Ok(product);
         }
