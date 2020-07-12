@@ -32,12 +32,10 @@ namespace HPlusSport.API.Controllers
         public IActionResult GetProduct(int id)
         {
             var product = _context.Products.Find(id);
-
-            if (product == null)
-            {
+            
+            if (product == null) 
                 return NotFound();
-            }
-
+            
             return Ok(product);
         }
     }
