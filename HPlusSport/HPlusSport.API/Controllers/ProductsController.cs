@@ -30,7 +30,7 @@ namespace HPlusSport.API.Controllers
             if (queryParameters.MinPrice != null && queryParameters.MaxPrice != null)
                 products = products.Where(p => 
                     p.Price >= queryParameters.MinPrice.Value &&
-                    p.Price <= queryParameters.MaxPrice.Value 
+                    p.Price <= queryParameters.MaxPrice.Value
                 );
             else if (queryParameters.MinPrice != null)
                 products = products.Where(p => 
@@ -41,9 +41,14 @@ namespace HPlusSport.API.Controllers
                     p.Price < queryParameters.MaxPrice.Value
                 );
 
-            if (!String.IsNullOrEmpty(queryParameters.Sku))
+            if (!string.IsNullOrEmpty(queryParameters.Sku))
                 products = products.Where(p => 
                     p.Sku == queryParameters.Sku
+                );
+
+            if (!string.IsNullOrEmpty(queryParameters.Name))
+                products = products.Where(p =>
+                    p.Name.ToLower().Contains(queryParameters.Name.ToLower())
                 );
             
             products =
@@ -52,7 +57,6 @@ namespace HPlusSport.API.Controllers
                 .Take(queryParameters.Size);
              
             return Ok(await products.ToArrayAsync());
-
         }
 
         [HttpGet("{id}")] 
