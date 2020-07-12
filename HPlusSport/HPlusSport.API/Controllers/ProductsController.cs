@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,14 +23,36 @@ namespace HPlusSport.API.Controllers
         }
         
         [HttpGet]
-        public async Task<IActionResult> GetAllProducts([FromQuery] QueryParameters queryParameters)
+        public async Task<IActionResult> GetAllProducts([FromQuery] ProductQueryParameters queryParameters)
         {
-            var products = 
-                _context.Products
-                .Skip(queryParameters.Size * queryParameters.Page - 1)
+            var products = _context.Products.AsQueryable();
+
+            if (queryParameters.MinPrice != null && queryParameters.MaxPrice != null)
+                products = products.Where(p => 
+                    p.Price >= queryParameters.MinPrice.Value &&
+                    p.Price <= queryParameters.MaxPrice.Value 
+                );
+            else if (queryParameters.MinPrice != null)
+                products = products.Where(p => 
+                    p.Price > queryParameters.MinPrice.Value
+                );
+            else if (queryParameters.MaxPrice != null)
+                products = products.Where(p => 
+                    p.Price < queryParameters.MaxPrice.Value
+                );
+
+            if (!String.IsNullOrEmpty(queryParameters.Sku))
+                products = products.Where(p => 
+                    p.Sku == queryParameters.Sku
+                );
+            
+            products =
+                products
+                .Skip(queryParameters.Size * (queryParameters.Page - 1))
                 .Take(queryParameters.Size);
-                
+             
             return Ok(await products.ToArrayAsync());
+
         }
 
         [HttpGet("{id}")] 
